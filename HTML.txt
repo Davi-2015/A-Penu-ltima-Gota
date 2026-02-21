@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>A Penúltima Gota</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <h1>A Penúltima Gota</h1>
+
+  <div id="configurar">
+    <label>Quantos jogadores? (mínimo 2): </label>
+    <input type="number" id="numJogadores" min="2" value="2">
+    <button id="iniciar">Iniciar Jogo</button>
+  </div>
+
+  <div id="jogo" style="display:none;">
+    <div id="tabuleiro"></div>
+    <p id="mensagem"></p>
+
+    <div id="controle">
+      <label>Quantas cavidades avançar (1-5)? </label>
+      <input type="number" id="passos" min="1" max="5">
+      <button id="avancar">Avançar</button>
+    </div>
+
+    <button id="novaPartida" style="display:none;">Outra partida</button>
+  </div>
+</body>
+</html>

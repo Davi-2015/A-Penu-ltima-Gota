@@ -1,0 +1,78 @@
+let totalCavidades = 20;
+let tabuleiro = [];
+let jogadorAtual = 0;
+let numJogadores = 2;
+
+const configurarDiv = document.getElementById('configurar');
+const iniciarBtn = document.getElementById('iniciar');
+
+const jogoDiv = document.getElementById('jogo');
+const tabuleiroDiv = document.getElementById('tabuleiro');
+const mensagem = document.getElementById('mensagem');
+const passosInput = document.getElementById('passos');
+const avancarBtn = document.getElementById('avancar');
+const novaPartidaBtn = document.getElementById('novaPartida');
+
+function iniciarJogo() {
+  numJogadores = parseInt(document.getElementById('numJogadores').value);
+  if (isNaN(numJogadores) || numJogadores < 2) {
+    alert('Digite pelo menos 2 jogadores');
+    return;
+  }
+
+  configurarDiv.style.display = 'none';
+  jogoDiv.style.display = 'block';
+
+  tabuleiro = Array(totalCavidades - 1).fill('○');
+  tabuleiro.push('🔴');
+  jogadorAtual = 0;
+  avancarBtn.disabled = false;
+  novaPartidaBtn.style.display = 'none';
+  atualizarTabuleiro();
+}
+
+function atualizarTabuleiro() {
+  tabuleiroDiv.textContent = tabuleiro.join(' ');
+  mensagem.textContent = `Jogador ${jogadorAtual + 1}, sua vez.`;
+}
+
+function jogar() {
+  let passos = parseInt(passosInput.value);
+  if (isNaN(passos) || passos < 1 || passos > 5) {
+    alert('Digite um número entre 1 e 5');
+    return;
+  }
+
+  for (let i = 0; i < tabuleiro.length; i++) {
+    if (tabuleiro[i] === '○') {
+      tabuleiro[i] = '●';
+      passos--;
+      if (passos === 0) break;
+    }
+  }
+
+  let restante = tabuleiro.filter(c => c === '○').length;
+
+  if (restante === 1) {
+    mensagem.innerHTML = `🔴 Penúltima gota colocada!<br>Jogador ${jogadorAtual + 1} VENCEU!`;
+    avancarBtn.disabled = true;
+    novaPartidaBtn.style.display = 'inline-block';
+  } else if (restante === 0) {
+    mensagem.innerHTML = `🔴 Última gota colocada!<br>Jogador ${jogadorAtual + 1} PERDEU!`;
+    avancarBtn.disabled = true;
+    novaPartidaBtn.style.display = 'inline-block';
+  } else {
+    jogadorAtual = (jogadorAtual + 1) % numJogadores;
+    atualizarTabuleiro();
+  }
+
+  passosInput.value = '';
+}
+
+iniciarBtn.addEventListener('click', iniciarJogo);
+avancarBtn.addEventListener('click', jogar);
+novaPartidaBtn.addEventListener('click', () => {
+  configurarDiv.style.display = 'block';
+  jogoDiv.style.display = 'none';
+  passosInput.value = '';
+});
